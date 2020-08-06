@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const debug = require('debug')('app:users');
+const jwt = require('jsonwebtoken');
 
 router.get('/b', (req, res) => {
   //res.render('index.ejs', { name: req.user.name })
@@ -26,7 +27,11 @@ router.get('/login', checkers.checkNotAuthenticated, (req, res) => {
   //res.render('login.ejs')
 })
 
-router.post('/login', checkers.checkNotAuthenticated, passport.authenticate('local', {
+router.post('/login', (req, res, next) => {
+    debug(`The login info is: ${JSON.stringify(req.body)}`);
+    next();
+},
+  checkers.checkNotAuthenticated, passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
@@ -48,6 +53,8 @@ router.post('/register', checkers.checkNotAuthenticated, async (req, res) => {
   //} catch {
     //res.redirect('/register')
   //}
+    debug(`The details are: ${JSON.stringify(req.body)}`);
+    res.status(400);
 })
 
 router.delete('/logout', (req, res) => {
