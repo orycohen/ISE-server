@@ -1,22 +1,58 @@
-var express = require('express');
-var router = express.Router();
-var passport = require('passport');
+const checkers = require('../middleware');
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+const debug = require('debug')('app:users');
 
-var userController = require('../controllers/user');
-
-router.post('/login', passport.authenticate('local'),(req, res, next)=>{
-    if(req.isAuthenticated()){
-        console.log('YES AUTH')
-        console.log(req.session)
-    }
-    else{
-        console.log('NO AUTH')
-    }
-    res.status(200)
+router.get('/b', (req, res) => {
+  //res.render('index.ejs', { name: req.user.name })
+    debug(`body is: ${JSON.stringify(req.body)}`);
+    res.json({message: "thank you for asking"});
 })
 
+router.post('/b', (req, res) => {
+  //res.render('index.ejs', { name: req.user.name })
+    debug(`body is: ${JSON.stringify(req.body)}`);
+    res.json({message: "thank you for posting"});
+})
 
-router.post('/signup', userController.signup)
+router.get('/', checkers.checkAuthenticated, (req, res) => {
+  //res.render('index.ejs', { name: req.user.name })
+    debug(`body is: ${JSON.stringify(req.body)}`);
+    res.send("Thank you!");
+})
 
+router.get('/login', checkers.checkNotAuthenticated, (req, res) => {
+  //res.render('login.ejs')
+})
+
+router.post('/login', checkers.checkNotAuthenticated, passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}))
+
+router.get('/register', checkers.checkNotAuthenticated, (req, res) => {
+  //res.render('register.ejs')
+})
+
+router.post('/register', checkers.checkNotAuthenticated, async (req, res) => {
+//  try {
+    //const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    //await User.create({
+      //name: req.body.name,
+      //email: req.body.email,
+      //password: hashedPassword
+    //})
+    //res.redirect('/login')
+  //} catch {
+    //res.redirect('/register')
+  //}
+})
+
+router.delete('/logout', (req, res) => {
+  //req.logOut()
+  //res.redirect('/login')
+})
 
 module.exports = router;
