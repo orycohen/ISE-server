@@ -52,7 +52,11 @@ const app = express();
     app.use(passport.session());
 
     app.use('/users', require('./routes/users'));
-
+    //app.use(express.static(require('path').join(__dirname, 'public', 'appBuild')));
+    //app.get('/*', (req, res) => {
+      //let path = require('path');
+      //res.sendFile(path.resolve(path.join(__dirname, 'public', 'appBuild', 'index.html')));
+    //});
 })().catch(err => debug(`Failure: ${err}`));
 
 module.exports = app
