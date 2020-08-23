@@ -28,7 +28,7 @@ var server = http.createServer(app);
  * Initializing the sockets.
  */
 
-// require('../socket')(server, middlewares);
+require('../socket')(server, middlewares);
 
 /**
  * Listen on provided port, on all network interfaces.

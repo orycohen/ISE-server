@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "devStart": "DEBUG=app:* nodemon app.js"
+    "devStart": "DEBUG=app:* nodemon bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

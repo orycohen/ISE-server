@@ -31,23 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(sessionMiddleware, passInit, passSession);
 
-var io = new Server(httpServer, { cookie: false });
-
-io.use((socket, next) => { sessionMiddleware(socket.request, socket.request.res || {}, next); });
-io.use((socket, next) => { passInit(socket.request, {}, next); });
-io.use((socket, next) => { passSession(socket.request, {}, next); });
-
-io.set('authorization', (data, accept) => {
-	var user = data.session.passport && data.session.passport.user;
-	debug('the headers are: ', data.headers);
-	debug('authen: ', data.isAuthenticated());
-	debug(user);
-	accept(null, true);
-})
-
-io.on('connection', (socket) => { debug(socket.request.session); debug('New connection'); });
-
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users'));
 
-httpServer.listen(8080, () => debug(`Listening on port 8080`));
+module.exports = { app, middlewares: { sessionMiddleware, passInit, passSession } };
