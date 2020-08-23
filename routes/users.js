@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const debug = require('debug')('app:users');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../model')('User');
 
@@ -39,6 +38,7 @@ router.post('/register',
     async (req, res) => {
       debug(`${req.path} is requested`);
       try {
+	      debug('you got here');
           const hashedPassword = await bcrypt.hash(req.body.password, 10)
           await User.create({
               name: req.body.name,

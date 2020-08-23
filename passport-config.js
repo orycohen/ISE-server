@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const debug = require('debug')('app:passport-local-auth');
 const User = require('./model')('User');
 
-function initialize(passport) {
+const initialize = passport => {
   const authenticateUser = async (email, password, done) => {
     const user = await User.findOne({email: email});
     if (user == null) {
@@ -14,6 +14,7 @@ function initialize(passport) {
       debug(`user is: ${user}`);
       debug(`password is: ${password} and user.password is: ${user.password}`);
       if (await bcrypt.compare(password, user.password)) {
+	      debug("So this is fine");
         return done(null, user)
       } else {
         return done(null, false, { message: 'Password incorrect' })
@@ -26,7 +27,7 @@ function initialize(passport) {
   passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
   passport.serializeUser((user, done) => done(null, user._id))
   passport.deserializeUser(async (id, done) => {
-    let user = await User.findOne({_id: id}).exec();
+    let user = await User.findOne({_id: id});
     return done(null, user)
   })
 }

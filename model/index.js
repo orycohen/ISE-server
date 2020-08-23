@@ -2,7 +2,7 @@ const mongo = require('mongoose');
 const debug = require('debug')('app:model-index');
 
 let db = mongo.createConnection();
-const mongoUri = process.env['MONGO_URI'];
+const mongoUri = 'mongodb://localhost/Volunteer_App'; 
 
 (async () => {
     try {

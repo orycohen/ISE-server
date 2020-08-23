@@ -7,7 +7,7 @@
 const env = require('dotenv')
 env.config()
 
-var app = require('../app');
+var { app, middlewares } = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
 
@@ -23,6 +23,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Initializing the sockets.
+ */
+
+// require('../socket')(server, middlewares);
 
 /**
  * Listen on provided port, on all network interfaces.
