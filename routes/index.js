@@ -3,9 +3,7 @@ const router = express.Router();
 const debug = require('debug')('app:routes-index');
 
 router.get('/', (req, res) => {
-	var p = require('path').join(__dirname, '..', 'build', 'index.html');
-	debug(`That is ${p}`);
-  res.sendFile(p);
+	res.send("What?");
 });
 
 router.get('/tryme', (req, res) => {

@@ -4,11 +4,12 @@
  * Module dependencies.
  */
 
-const env = require('dotenv')
-env.config()
+
+const env = require('dotenv');
+env.config();
 
 var { app, middlewares } = require('../app');
-var debug = require('debug')('server:server');
+var debug = require('debug')('app:server');
 var http = require('http');
 
 /**
@@ -33,8 +34,7 @@ require('../socket')(server, middlewares);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
+server.listen(port, () => debug(`Listening on port ${port}`));
 server.on('error', onError);
 server.on('listening', onListening);
 
