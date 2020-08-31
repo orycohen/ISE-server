@@ -5,6 +5,17 @@ const passport = require('passport');
 const debug = require('debug')('app:users');
 const bcrypt = require('bcrypt');
 const User = require('../model')('User');
+const multer = require('multer');
+const middleware = require('../middleware');
+
+const storage = multer.diskStorage({
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, 'hello' + 'file.png')
+    }
+});
+
+var upload = multer();
 
 router.post('/login',
     (req, res, next) => {
@@ -65,6 +76,21 @@ router.get('/user', (req, res) => {
 router.delete('/logout', (req, res) => {
   req.logOut()
   res.send("Thank you");
-})
+});
+
+router.put('/update', middleware.checkAuthenticated, upload.single('image'), (req, res) => {
+	User.findById(req.user._id, (err, user) => {
+		user.image = req.file.buffer.toString('base64');
+		user.address = req.body.address;
+		user.phone = req.body.phoneNumber;
+		user.save().then(() => {res.send('Updated');});
+	});
+});
+
+router.get('/userdetails', middleware.checkAuthenticated, (req, res) => {
+	User.findById(req.user._id, (err, user) => {
+		res.send(user);
+	});
+});
 
 module.exports = router;

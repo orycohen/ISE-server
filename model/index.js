@@ -13,5 +13,9 @@ const mongoUri = 'mongodb://localhost/Volunteer_App';
 })();
 
 require('./models/user')(db);
+require('./models/needy')(db);
+require('./models/message')(db);
+require('./models/request')(db);
+require('./models/needyRequest')(db);
 
 module.exports = model => db.model(model);

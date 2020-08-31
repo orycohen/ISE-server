@@ -11,5 +11,12 @@ module.exports = {
             return res.redirect('/')
         }
         next()
+    },
+    checkIsManager: (req, res, next) => {
+        if (req.isAuthenticated() && req.user.type === 'Manager') {
+            return next()
+        }
+
+        res.redirect('/login')
     }
 }

@@ -33,5 +33,6 @@ app.use(sessionMiddleware, passInit, passSession);
 
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users'));
+app.use('/api', require('./routes/api'));
 
 module.exports = { app, middlewares: { sessionMiddleware, passInit, passSession } };
